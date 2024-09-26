@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +11,22 @@ export class AuthService {
   private accessToken: string = '';
   private idToken: string = '';
   private refreshToken: string = '';
-  constructor(private router: Router, private jwtHelper: JwtHelperService) {
+  private readonly accessTokenKey = 'access_token';
+
+  constructor(private router: Router, private jwtHelper: JwtHelperService, private storage: StorageService) {
 
   }
 
 
   login(username: string, pwd: string) {
-
+    this.storage.setItem(this.accessTokenKey, 'access_token_content');
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.storage.removeItem(this.accessTokenKey);
   }
 
   get isLoggedIn(): boolean {
-    return false;
+    return (this.storage.getItem(this.accessTokenKey)?.length ?? 0) > 0;
   }
 }
