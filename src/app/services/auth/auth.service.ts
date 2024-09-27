@@ -3,15 +3,13 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from '../storage/storage.service';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private readonly accessTokenKey = 'access_token';
-  private readonly idTokenKey = 'id_token';
-  private readonly refreshToken = 'refresh_token';
-
+  private readonly tokenIssuer: string = 'https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_uUKF7vYlZ';
 
   constructor(
     private router: Router,
@@ -20,44 +18,26 @@ export class AuthService {
     private http: HttpClient
   ) {}
 
-  login(username: string, pwd: string) {
+  login(username: string, pwd: string): Observable<LoginResp> {
     const signInEndpoint =
       'https://8gvxppceqb.execute-api.ap-southeast-2.amazonaws.com/auth/v1/login';
     const requestBody = {
       Username: username,
       Password: pwd,
     };
-
-    this.http.post<LoginResp>(signInEndpoint, requestBody).subscribe({
-      next: (v) => {
-        if (!v.AccessToken || !v.IdToken || !v.RefreshToken) {
-          return;
-        }
-        this.storage.setItem(
-          this.accessTokenKey,
-          v.AccessToken
-        );
-        this.router.navigate(['/home']);
-      },
-      error: (e) => {
-        // show error msg
-      },
-      complete: () => {
-
-      } 
-    }
-    );
+    return this.http.post<LoginResp>(signInEndpoint, requestBody);
   }
 
   logout() {
-    this.storage.removeItem(this.accessTokenKey);
+    this.storage.removeItem(tokenKeys.accessTokenKey);
     this.router.navigate(['/auth/login']);
   }
 
   get isLoggedIn(): boolean {
-    return (
-      (this.storage.getItem(this.accessTokenKey)?.length ?? 0) > 0
-    );
+    const accessToken = this.storage.getItem(tokenKeys.accessTokenKey)??'';
+    const decoded = this.jwtHelper.decodeToken(accessToken);
+    const isExpire = this.jwtHelper.isTokenExpired(accessToken);
+    return decoded.iss && decoded.iss === this.tokenIssuer && decoded.username && !isExpire;
   }
 }
 
@@ -68,4 +48,10 @@ export interface LoginResp {
   IdToken?: string;
   RefreshToken?: string;
   TokenType?: string;
+}
+
+export enum tokenKeys  {
+  accessTokenKey = 'access_token',
+  idTokenKey = 'id_token',
+  refreshToken = 'refresh_token',
 }

@@ -10,6 +10,8 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 
+import { MessagesModule } from 'primeng/messages';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { StepperModule } from 'primeng/stepper';
     InputTextModule,
     PasswordModule,
     ButtonModule,
-    StepperModule
+    StepperModule,
+    MessagesModule
   ]
 })
 export class AuthModule { }

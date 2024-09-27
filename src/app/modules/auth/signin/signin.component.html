@@ -9,10 +9,10 @@
                         </div>
                     </div>
                     <div class="flex pt-4 justify-content-end">
-                        <p-button 
-                            label="Next" 
-                            icon="pi pi-arrow-right" 
-                            iconPos="right" 
+                        <p-button
+                            label="Next"
+                            icon="pi pi-arrow-right"
+                            iconPos="right"
                             (onClick)="nextCallback.emit()" />
                     </div>
                 </ng-template>
@@ -25,14 +25,14 @@
                         </div>
                     </div>
                     <div class="flex pt-4 justify-content-between">
-                        <p-button 
-                            label="Back" 
-                            icon="pi pi-arrow-left" 
+                        <p-button
+                            label="Back"
+                            icon="pi pi-arrow-left"
                             (onClick)="prevCallback.emit()" />
-                        <p-button 
-                            label="Next" 
-                            icon="pi pi-arrow-right" 
-                            iconPos="right" 
+                        <p-button
+                            label="Next"
+                            icon="pi pi-arrow-right"
+                            iconPos="right"
                             (onClick)="nextCallback.emit()" />
                     </div>
                 </ng-template>
@@ -52,7 +52,11 @@
         </p-stepper>
     </div>
     <div class="form-container">
+
         <form [formGroup]="form" class="form-group" (ngSubmit)="form.valid && onSubmit()">
+          <div class="card">
+            <p-messages [(value)]="messages" [enableService]="false" />
+          </div>
             <div class="input-container">
                 <label for="username">Username</label>
                 <input id="username" type="text" pInputText formControlName="username"/>
@@ -72,4 +76,3 @@
     </div>
 
   </div>
-  
