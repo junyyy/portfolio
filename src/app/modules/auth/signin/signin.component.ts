@@ -21,6 +21,7 @@ export class SigninComponent {
     this.form = this.fb.group({
       username: ['', Validators.required],
       password:  ['', Validators.required],
+      file: [null],
     })
   }
 
@@ -28,6 +29,5 @@ export class SigninComponent {
     const username = this.form.get('username')?.value;
     const pwd =  this.form.get('password')?.value;
     this.authService.login(username, pwd);
-    this.router.navigate(['/home']);
   }
 }

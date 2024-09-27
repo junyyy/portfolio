@@ -20,10 +20,12 @@ export class AuthService {
 
   login(username: string, pwd: string) {
     this.storage.setItem(this.accessTokenKey, 'access_token_content');
+    this.router.navigate(['/home']);
   }
 
   logout() {
     this.storage.removeItem(this.accessTokenKey);
+    this.router.navigate(['/auth/login']);
   }
 
   get isLoggedIn(): boolean {

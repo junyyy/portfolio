@@ -1,0 +1,10 @@
+<div>
+    <div class="address">
+        <input type="text" pInputText [(ngModel)]="url" (keyup.enter)="onEnterPress()" />
+    </div>
+
+
+    <div class="content">
+        <iframe width="100%" height="100%" frameBorder="0" [src]="iframeUrl"></iframe>
+    </div>
+</div>
