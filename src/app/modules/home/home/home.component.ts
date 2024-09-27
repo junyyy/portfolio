@@ -83,20 +83,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   fetchDate() {
     this.dockItems = [
       {
-        label: 'Finder',
-        tooltipOptions: {
-          tooltipLabel: 'Finder',
-          tooltipPosition: 'top',
-          positionTop: -15,
-          positionLeft: 15,
-          showDelay: 1000,
-        },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/finder.svg',
-        command: () => {
-          this.displayFinder = true;
-        },
-      },
-      {
         label: 'Terminal',
         tooltipOptions: {
           tooltipLabel: 'Terminal',
@@ -105,56 +91,23 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/terminal.svg',
+        icon: 'assets/demo/dock-icons/terminal.svg',
         command: () => {
           this.displayTerminal = true;
         },
       },
       {
-        label: 'App Store',
+        label: 'Game',
         tooltipOptions: {
-          tooltipLabel: 'App Store',
+          tooltipLabel: 'Game',
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/appstore.svg',
-        command: () => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'An unexpected error occurred while signing in.',
-            detail: 'UNTRUSTED_CERT_TITLE',
-            key: 'tc',
-          });
-        },
-      },
-      {
-        label: 'Safari',
-        tooltipOptions: {
-          tooltipLabel: 'Safari',
-          tooltipPosition: 'top',
-          positionTop: -15,
-          positionLeft: 15,
-          showDelay: 1000,
-        },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/safari.svg',
+        icon: 'assets/demo/dock-icons/gamepad.svg',
         command: () => {
           this.displayWebBrowser = true;
-        },
-      },
-      {
-        label: 'Photos',
-        tooltipOptions: {
-          tooltipLabel: 'Photos',
-          tooltipPosition: 'top',
-          positionTop: -15,
-          positionLeft: 15,
-          showDelay: 1000,
-        },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/photos.svg',
-        command: () => {
-          this.displayGalleria = true;
         },
       },
       {
@@ -166,25 +119,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/github.svg',
-      },
-      {
-        label: 'Trash',
-        tooltipOptions: {
-          tooltipLabel: 'Trash',
-          tooltipPosition: 'top',
-          positionTop: -15,
-          positionLeft: 15,
-          showDelay: 1000,
-        },
-        icon: 'https://primefaces.org/cdn/primeng/images/dock/trash.png',
-        command: () => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Empty Trash',
-            key: 'tc',
-          });
-        },
+        icon: 'assets/demo/dock-icons/github.svg',
       },
     ];
 
@@ -194,15 +129,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         styleClass: 'menubar-root',
       },
       {
-        label: 'Events',
+        label: 'Certificates',
         items: [
           {
-            label: 'AAAAAAAAAAAA',
+            label: 'HEGS',
             icon: 'pi pi-fw pi-pencil',
-          },
-          {
-            label: 'Archieve',
-            icon: 'pi pi-fw pi-calendar-times',
           },
         ],
       },
