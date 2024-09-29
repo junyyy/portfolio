@@ -54,11 +54,13 @@ export class SigninComponent {
             tokenKeys.accessTokenKey,
             res.AccessToken ?? ''
           );
+          this.authService.updateLoginResp = res;
           this.router.navigate(['/home']);
         },
         error: (err) => {
-          console.log(err);
+          this.authService.updateLoginResp = null;
           this.messages = [{ severity: 'error', detail: 'Log in failed' }];
+          console.log(err);
         }
       });
   }

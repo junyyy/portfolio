@@ -2,9 +2,9 @@ import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { TerminalService } from 'primeng/terminal';
 import { Subscription } from 'rxjs';
-import { PhotoService } from '../../../services/demo/photo.service';
 import { NodeService } from '../../../services/demo/node.service';
 import { AuthService } from '../../../services/auth/auth.service';
+import { S3Service } from '../../../services/s3/s3.service';
 
 @Component({
   selector: 'app-home',
@@ -28,12 +28,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private galleriaService: PhotoService,
     private nodeService: NodeService,
     private messageService: MessageService,
     private terminalService: TerminalService,
     private confirmationService: ConfirmationService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private s3Service: S3Service,
   ) {}
 
   ngOnInit() {
@@ -129,11 +129,47 @@ export class HomeComponent implements OnInit, OnDestroy {
         styleClass: 'menubar-root',
       },
       {
+        label: 'Documentation',
+        items: [
+          {
+            label: 'Architecture',
+            icon: 'pi pi-fw pi-pencil',
+          },
+          {
+            label: 'Github',
+            icon: 'pi pi-fw pi-pencil',
+            items: [
+              {
+                label: 'Frontend',
+                icon: 'pi pi-fw pi-pencil',
+                command: () => {
+                  window.open('https://github.com/junyyy/portfolio', '_blank');
+                }
+              },
+              {
+                label: 'Backend',
+                icon: 'pi pi-fw pi-pencil',
+                command: () => {
+                  window.open('https://github.com/junyyy/portfolio-lambda', '_blank');
+                }
+              },
+            ]
+          },
+        ],
+      },
+      {
         label: 'Certificates',
         items: [
           {
             label: 'HEGS',
             icon: 'pi pi-fw pi-pencil',
+            command: () => {
+              this.s3Service.getS3ObjUrl('certificate.pdf').subscribe((url) => {
+                window.open(url, '_blank');
+              })
+
+            }
+
           },
         ],
       },
@@ -174,7 +210,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       (command) => this.commandHandler(command)
     );
 
-    this.galleriaService.getImages().then((data) => (this.images = data));
     this.nodeService.getFiles().then((data) => (this.nodes = data));
   }
 

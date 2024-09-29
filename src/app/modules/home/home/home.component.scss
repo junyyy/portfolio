@@ -1,7 +1,7 @@
 :host ::ng-deep {
     .dock-window {
         width: 100vw;
-        height: 90vh;
+        height: 98vh;
         position: relative;
         background-image: url('../../../../assets/demo/background3.svg');
         background-repeat: no-repeat;
@@ -10,7 +10,7 @@
     }
 
     .p-dock {
-        z-index: 1000;
+        z-index: 1000;  
     }
 
     .dock-advanced {
