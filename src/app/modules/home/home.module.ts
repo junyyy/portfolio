@@ -12,14 +12,12 @@ import { ToastModule } from 'primeng/toast';
 import { GalleriaModule } from 'primeng/galleria';
 import { TerminalModule } from 'primeng/terminal';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { WebBrowserComponent } from './web-browser/web-browser.component';
 import { InputTextModule } from 'primeng/inputtext';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    WebBrowserComponent
   ],
   imports: [
     CommonModule,

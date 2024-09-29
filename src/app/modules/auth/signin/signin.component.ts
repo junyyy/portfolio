@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { AuthService, LoginResp, tokenKeys } from '../../../services/auth/auth.service';
+import {
+  AuthService,
+  LoginResp,
+  tokenKeys,
+} from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
 import { StorageService } from '../../../services/storage/storage.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signin',
@@ -14,6 +19,7 @@ import { StorageService } from '../../../services/storage/storage.service';
 export class SigninComponent {
   form: FormGroup = new FormGroup({});
   messages: Message[] = [];
+  isSignin: boolean = false;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -32,17 +38,28 @@ export class SigninComponent {
   }
 
   onSubmit() {
+    this.isSignin = true;
     const username = this.form.get('username')?.value;
     const pwd = this.form.get('password')?.value;
-    this.authService
-      .login(username, pwd)
-      .subscribe({ next: (res: LoginResp) => {
-        this.messages = [{ severity: 'info', detail: 'Logged in' }];
-        this.storageService.setItem(tokenKeys.accessTokenKey, res.AccessToken??'');
-        this.router.navigate(['/home']);
-      }, error: (err) => {
-        console.log(err)
-        this.messages = [{ severity: 'error', detail: 'Logged in' }];
-      }, complete: () => {} });
+    
+    this.authService.login(username, pwd)
+      .pipe(
+        finalize(() => {
+          this.isSignin = false;
+        })
+      )
+      .subscribe({
+        next: (res: LoginResp) => {
+          this.storageService.setItem(
+            tokenKeys.accessTokenKey,
+            res.AccessToken ?? ''
+          );
+          this.router.navigate(['/home']);
+        },
+        error: (err) => {
+          console.log(err);
+          this.messages = [{ severity: 'error', detail: 'Log in failed' }];
+        }
+      });
   }
 }

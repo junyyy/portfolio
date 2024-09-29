@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 
 import { MessagesModule } from 'primeng/messages';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { MessagesModule } from 'primeng/messages';
     PasswordModule,
     ButtonModule,
     StepperModule,
-    MessagesModule
+    MessagesModule,
+    ProgressSpinnerModule,
   ]
 })
 export class AuthModule { }

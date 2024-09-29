@@ -4,13 +4,14 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from '../storage/storage.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../comman/env';
 @Injectable({
   providedIn: 'root'
 })
 
-export class AuthService {
-  private readonly tokenIssuer: string = 'https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_uUKF7vYlZ';
 
+export class AuthService {
+  private readonly tokenIssuer: string = environment.cognitoIssuer;
   constructor(
     private router: Router,
     private jwtHelper: JwtHelperService,
@@ -20,7 +21,7 @@ export class AuthService {
 
   login(username: string, pwd: string): Observable<LoginResp> {
     const signInEndpoint =
-      'https://8gvxppceqb.execute-api.ap-southeast-2.amazonaws.com/auth/v1/login';
+      `${environment.apiGatewayMain}/auth/v1/login`;
     const requestBody = {
       Username: username,
       Password: pwd,
@@ -37,7 +38,7 @@ export class AuthService {
     const accessToken = this.storage.getItem(tokenKeys.accessTokenKey)??'';
     const decoded = this.jwtHelper.decodeToken(accessToken);
     const isExpire = this.jwtHelper.isTokenExpired(accessToken);
-    return decoded.iss && decoded.iss === this.tokenIssuer && decoded.username && !isExpire;
+    return decoded && decoded.iss && decoded.iss === this.tokenIssuer && decoded.username && !isExpire;
   }
 }
 
