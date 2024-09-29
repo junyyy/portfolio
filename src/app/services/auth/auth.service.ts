@@ -3,15 +3,14 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from '../storage/storage.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from '../../comman/env';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
-
 export class AuthService {
   private readonly tokenIssuer: string = environment.cognitoIssuer;
+  private loginResp: LoginResp | null = null;
   constructor(
     private router: Router,
     private jwtHelper: JwtHelperService,
@@ -20,8 +19,7 @@ export class AuthService {
   ) {}
 
   login(username: string, pwd: string): Observable<LoginResp> {
-    const signInEndpoint =
-      `${environment.apiGatewayMain}/auth/v1/login`;
+    const signInEndpoint = `${environment.apiGatewayMain}/auth/v1/login`;
     const requestBody = {
       Username: username,
       Password: pwd,
@@ -34,14 +32,25 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
   }
 
+  set updateLoginResp(resp: LoginResp | null) {
+    this.loginResp = resp;
+  }
+
   get isLoggedIn(): boolean {
-    const accessToken = this.storage.getItem(tokenKeys.accessTokenKey)??'';
+    const accessToken = this.loginResp
+      ? this.loginResp?.AccessToken ?? ''
+      : this.storage.getItem(tokenKeys.accessTokenKey) ?? '';
     const decoded = this.jwtHelper.decodeToken(accessToken);
     const isExpire = this.jwtHelper.isTokenExpired(accessToken);
-    return decoded && decoded.iss && decoded.iss === this.tokenIssuer && decoded.username && !isExpire;
+    return (
+      decoded &&
+      decoded.iss &&
+      decoded.iss === this.tokenIssuer &&
+      decoded.username &&
+      !isExpire
+    );
   }
 }
-
 
 export interface LoginResp {
   AccessToken?: string;
@@ -51,7 +60,7 @@ export interface LoginResp {
   TokenType?: string;
 }
 
-export enum tokenKeys  {
+export enum tokenKeys {
   accessTokenKey = 'access_token',
   idTokenKey = 'id_token',
   refreshToken = 'refresh_token',
