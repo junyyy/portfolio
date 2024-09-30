@@ -147,7 +147,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.menubarItems = [
       {
-        label: 'My Portfolio',
+        label: 'My CV',
         styleClass: 'menubar-root',
         command: () => {
           const sub = this.getS3FileSub('cv.pdf');
