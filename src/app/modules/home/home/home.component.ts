@@ -182,6 +182,17 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
 
           },
+          {
+            label: 'Professional Year',
+            icon: 'pi pi-fw pi-pencil',
+            command: () => {
+              this.s3Service.getS3ObjUrl('professiona_year.pdf').subscribe((url) => {
+                window.open(url, '_blank');
+              })
+
+            }
+
+          },
         ],
       },
       {
