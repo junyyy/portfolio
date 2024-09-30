@@ -4,7 +4,7 @@ import { Validators } from '@angular/forms';
 import {
   AuthService,
   LoginResp,
-  tokenKeys,
+  TokenKeysEnum,
 } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
@@ -51,7 +51,7 @@ export class SigninComponent {
       .subscribe({
         next: (res: LoginResp) => {
           this.storageService.setItem(
-            tokenKeys.accessTokenKey,
+            TokenKeysEnum.accessTokenKey,
             res.AccessToken ?? ''
           );
           this.authService.updateLoginResp = res;
@@ -59,8 +59,9 @@ export class SigninComponent {
         },
         error: (err) => {
           this.authService.updateLoginResp = null;
+          this.storageService.removeItem(TokenKeysEnum.accessTokenKey);
           this.messages = [{ severity: 'error', detail: 'Log in failed' }];
-          console.log(err);
+          console.warn(err);
         }
       });
   }

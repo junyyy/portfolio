@@ -13,11 +13,14 @@ import { GalleriaModule } from 'primeng/galleria';
 import { TerminalModule } from 'primeng/terminal';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ArchitectureComponent } from './architecture/architecture.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
+    ArchitectureComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +34,8 @@ import { InputTextModule } from 'primeng/inputtext';
     GalleriaModule,
     TerminalModule,
     ConfirmDialogModule,
-    InputTextModule
+    InputTextModule,
+    ProgressSpinnerModule
   ]
 })
 export class HomeModule { }

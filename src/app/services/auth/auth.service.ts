@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from '../storage/storage.service';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { environment } from '../../comman/env';
 @Injectable({
   providedIn: 'root',
@@ -27,19 +27,26 @@ export class AuthService {
     return this.http.post<LoginResp>(signInEndpoint, requestBody);
   }
 
-  logout() {
-    this.storage.removeItem(tokenKeys.accessTokenKey);
-    this.router.navigate(['/auth/login']);
+  logout(): Observable<string> {
+    const logoutEndpoint = `${environment.apiGatewayMain}/user/v1/logout`;
+    return this.http.post<string>(logoutEndpoint, {});
   }
 
   set updateLoginResp(resp: LoginResp | null) {
     this.loginResp = resp;
   }
 
+  get accessToken(): string {
+    return this.loginResp
+    ? this.loginResp?.AccessToken ?? ''
+    : this.storage.getItem(TokenKeysEnum.accessTokenKey) ?? '';
+  }
+
   get isLoggedIn(): boolean {
     const accessToken = this.loginResp
       ? this.loginResp?.AccessToken ?? ''
-      : this.storage.getItem(tokenKeys.accessTokenKey) ?? '';
+      : this.storage.getItem(TokenKeysEnum.accessTokenKey) ?? '';
+    debugger
     const decoded = this.jwtHelper.decodeToken(accessToken);
     const isExpire = this.jwtHelper.isTokenExpired(accessToken);
     return (
@@ -60,7 +67,7 @@ export interface LoginResp {
   TokenType?: string;
 }
 
-export enum tokenKeys {
+export enum TokenKeysEnum {
   accessTokenKey = 'access_token',
   idTokenKey = 'id_token',
   refreshToken = 'refresh_token',

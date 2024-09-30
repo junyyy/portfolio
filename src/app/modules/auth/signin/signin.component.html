@@ -18,7 +18,10 @@
               label="Log in"
               type="submit"
               [disabled]="!form.valid || isSignin"
-            ></button>
+              
+            >
+            <p-progressSpinner class="small-progress-bar" ariaLabel="loading" *ngIf="isSignin" strokeWidth="8"  />
+          </button>
           </form>
     </div>
 

@@ -1,10 +1,12 @@
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { TerminalService } from 'primeng/terminal';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { NodeService } from '../../../services/demo/node.service';
-import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService, TokenKeysEnum } from '../../../services/auth/auth.service';
 import { S3Service } from '../../../services/s3/s3.service';
+import { StorageService } from '../../../services/storage/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +16,8 @@ import { S3Service } from '../../../services/s3/s3.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   displayTerminal: boolean = false;
-  displayWebBrowser: boolean = false;
+  displayArchi: boolean = false;
   displayFinder: boolean = false;
-  displayGalleria: boolean = false;
   dockItems: MenuItem[] | undefined;
   menubarItems: any[] | undefined;
   responsiveOptions: any[] | undefined;
@@ -34,6 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private renderer: Renderer2,
     private s3Service: S3Service,
+    private storage: StorageService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -107,7 +110,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         },
         icon: 'assets/demo/dock-icons/gamepad.svg',
         command: () => {
-          this.displayWebBrowser = true;
+          this.messageService.add({
+            severity:'info',
+            detail: 'In progress'
+          });
         },
       },
       {
@@ -120,6 +126,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           showDelay: 1000,
         },
         icon: 'assets/demo/dock-icons/github.svg',
+        command: () => {
+        },
       },
     ];
 
@@ -129,14 +137,17 @@ export class HomeComponent implements OnInit, OnDestroy {
         styleClass: 'menubar-root',
       },
       {
-        label: 'Documentation',
+        label: 'Tech Doc',
         items: [
           {
-            label: 'Architecture',
+            label: 'App structure',
             icon: 'pi pi-fw pi-pencil',
+            command: () => {
+              this.displayArchi = true;
+            }
           },
           {
-            label: 'Github',
+            label: 'Source code',
             icon: 'pi pi-fw pi-pencil',
             items: [
               {
@@ -184,7 +195,12 @@ export class HomeComponent implements OnInit, OnDestroy {
             rejectIcon: 'none',
             rejectButtonStyleClass: 'p-button-text',
             accept: () => {
-              this.authService.logout();
+              this.authService.logout().pipe(finalize(() => {
+                this.authService.updateLoginResp = null;
+                this.storage.removeItem(TokenKeysEnum.accessTokenKey);
+                this.router.navigate(['/auth/login']);
+              })).subscribe((_) => {
+              })
             },
           });
         },
