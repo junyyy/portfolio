@@ -1,8 +1,7 @@
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { TerminalService } from 'primeng/terminal';
-import { finalize, Subscription } from 'rxjs';
-import { NodeService } from '../../../services/demo/node.service';
+import { finalize, Observable, of, Subscription } from 'rxjs';
 import {
   AuthService,
   TokenKeysEnum,
@@ -18,7 +17,6 @@ import { Router } from '@angular/router';
   providers: [
     MessageService,
     TerminalService,
-    NodeService,
     MessageService,
     ConfirmationService,
   ],
@@ -26,7 +24,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit, OnDestroy {
   displayTerminal: boolean = false;
   displayArchi: boolean = false;
-  displayFinder: boolean = false;
+  displayPortfolio: boolean = false;
   dockItems: MenuItem[] | undefined;
   menubarItems: any[] | undefined;
   responsiveOptions: any[] | undefined;
@@ -35,10 +33,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscription: Subscription | undefined;
   curDatetime: Date = new Date();
   timeOut: any = null;
+  s3FileUrlMap: Map<string, string> = new Map();
+  pdfUrl: string = '';
 
   constructor(
     private authService: AuthService,
-    private nodeService: NodeService,
     private messageService: MessageService,
     private terminalService: TerminalService,
     private confirmationService: ConfirmationService,
@@ -151,10 +150,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         label: 'My Portfolio',
         styleClass: 'menubar-root',
         command: () => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Info',
-            detail: 'Still working on...',
+          const sub = this.getS3FileSub('cv.pdf');
+          sub.subscribe((url) => {
+            this.pdfUrl = url ?? '';
+            this.displayPortfolio = true;
           });
         },
       },
@@ -200,20 +199,14 @@ export class HomeComponent implements OnInit, OnDestroy {
             label: 'HEGS',
             icon: 'pi pi-fw pi-pencil',
             command: () => {
-              this.s3Service.getS3ObjUrl('certificate.pdf').subscribe((url) => {
-                window.open(url, '_blank');
-              });
+              this.openFileCommand('certificate.pdf');
             },
           },
           {
             label: 'Professional Year',
             icon: 'pi pi-fw pi-pencil',
             command: () => {
-              this.s3Service
-                .getS3ObjUrl('professiona_year.pdf')
-                .subscribe((url) => {
-                  window.open(url, '_blank');
-                });
+              this.openFileCommand('professiona_year.pdf');
             },
           },
         ],
@@ -263,13 +256,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscription = this.terminalService.commandHandler.subscribe(
       (command) => this.commandHandler(command)
     );
-
-    this.nodeService.getFiles().then((data) => (this.nodes = data));
   }
 
   startDate() {
     this.timeOut = setInterval(() => {
       this.curDatetime = new Date();
     }, 1000);
+  }
+
+  afterLoad($event: any) {
+    console.log($event);
+  }
+
+  getS3FileSub(fileName: string): Observable<string | undefined> {
+    return this.s3FileUrlMap.has(fileName)
+      ? of(this.s3FileUrlMap.get(fileName))
+      : this.s3Service.getS3ObjUrl(fileName);
+  }
+
+  openFileCommand(fileName: string) {
+    const sub = this.getS3FileSub(fileName);
+    sub.subscribe((url) => {
+      if (!this.s3FileUrlMap.has(fileName))
+        this.s3FileUrlMap.set(fileName, url ?? '');
+      window.open(url, '_blank');
+    });
   }
 }

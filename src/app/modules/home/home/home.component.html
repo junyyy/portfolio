@@ -21,20 +21,26 @@
   <p-toast position="top-center" key="tc" />
 
   <p-dialog
-    [(visible)]="displayFinder"
+    [(visible)]="displayPortfolio"
     [breakpoints]="{ '960px': '50vw' }"
-    [style]="{ width: '30vw', height: '18rem' }"
-    [draggable]="false"
-    [resizable]="false"
+    [style]="{ width: '65vw', height: '65vh' }"
+    [maximizable]="true"
+    [draggable]="true"
+    [resizable]="true"
   >
-    <p-tree [value]="nodes" />
+    <iframe
+      [src]="pdfUrl | safeUrl"
+      width="100%"
+      height="600px"
+      style="height: 100%"
+    ></iframe>
   </p-dialog>
 
   <p-dialog
-    [maximizable]="true"
     [(visible)]="displayTerminal"
     [breakpoints]="{ '960px': '50vw' }"
     [style]="{ width: '30vw' }"
+    [maximizable]="true"
     [draggable]="true"
     [resizable]="true"
   >

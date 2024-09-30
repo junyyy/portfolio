@@ -4,24 +4,23 @@ import mermaid, { RenderResult } from 'mermaid';
 @Component({
   selector: 'app-architecture',
   templateUrl: './architecture.component.html',
-  styleUrl: './architecture.component.scss'
+  styleUrl: './architecture.component.scss',
 })
 export class ArchitectureComponent implements AfterViewInit {
-  diagramDefinition: string = ''
+  diagramDefinition: string = '';
 
-  @ViewChild('mermaidDiagram', {static: false}) mermainContainer?: ElementRef
-   ngAfterViewInit(): void {
-     this.diagramDefinition = this.getDiagramDefiniation();
-     mermaid.initialize({ startOnLoad: true });
-     mermaid.render('mermaid-diagram', this.diagramDefinition).then((res: RenderResult) => {
-      if (this.mermainContainer) {
-        this.mermainContainer.nativeElement.innerHTML = res.svg;
-      }
-     })
-   }
-
-
-
+  @ViewChild('mermaidDiagram', { static: false }) mermainContainer?: ElementRef;
+  ngAfterViewInit(): void {
+    this.diagramDefinition = this.getDiagramDefiniation();
+    mermaid.initialize({ startOnLoad: true });
+    mermaid
+      .render('mermaid-diagram', this.diagramDefinition)
+      .then((res: RenderResult) => {
+        if (this.mermainContainer) {
+          this.mermainContainer.nativeElement.innerHTML = res.svg;
+        }
+      });
+  }
 
   getDiagramDefiniation(): string {
     return `       C4Context
@@ -55,6 +54,6 @@ export class ArchitectureComponent implements AfterViewInit {
     BiRel(lambda, s3, "object service")
     BiRel(amplify, spa, "code base, management, deployment")
     Rel(lambda, backend, "runtime and management")
-    `
+    `;
   }
- }
+}

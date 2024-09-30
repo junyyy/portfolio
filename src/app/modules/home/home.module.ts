@@ -16,9 +16,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ArchitectureComponent } from './architecture/architecture.component';
 import { ChatComponent } from './chat/chat.component';
-
+import { SafeUrlPipe } from '../../services/pipes/safe-url.pipe';
 @NgModule({
-  declarations: [HomeComponent, ArchitectureComponent, ChatComponent],
+  declarations: [
+    HomeComponent,
+    ArchitectureComponent,
+    ChatComponent,
+    SafeUrlPipe,
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule,

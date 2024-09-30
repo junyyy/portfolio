@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AuthRoutingModule } from './auth-routing.module';
 import { SigninComponent } from './signin/signin.component';
 
-import {ReactiveFormsModule} from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext'
+import { ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
@@ -13,11 +13,8 @@ import { StepperModule } from 'primeng/stepper';
 import { MessagesModule } from 'primeng/messages';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-
 @NgModule({
-  declarations: [
-    SigninComponent
-  ],
+  declarations: [SigninComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -28,6 +25,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     StepperModule,
     MessagesModule,
     ProgressSpinnerModule,
-  ]
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

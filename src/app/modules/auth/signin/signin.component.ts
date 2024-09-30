@@ -41,8 +41,9 @@ export class SigninComponent {
     this.isSignin = true;
     const username = this.form.get('username')?.value;
     const pwd = this.form.get('password')?.value;
-    
-    this.authService.login(username, pwd)
+
+    this.authService
+      .login(username, pwd)
       .pipe(
         finalize(() => {
           this.isSignin = false;
@@ -62,7 +63,7 @@ export class SigninComponent {
           this.storageService.removeItem(TokenKeysEnum.accessTokenKey);
           this.messages = [{ severity: 'error', detail: 'Log in failed' }];
           console.warn(err);
-        }
+        },
       });
   }
 }
