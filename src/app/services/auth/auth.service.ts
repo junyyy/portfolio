@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from '../storage/storage.service';
 import { HttpClient } from '@angular/common/http';
-import {  Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../comman/env';
 @Injectable({
   providedIn: 'root',
@@ -38,15 +38,14 @@ export class AuthService {
 
   get accessToken(): string {
     return this.loginResp
-    ? this.loginResp?.AccessToken ?? ''
-    : this.storage.getItem(TokenKeysEnum.accessTokenKey) ?? '';
+      ? this.loginResp?.AccessToken ?? ''
+      : this.storage.getItem(TokenKeysEnum.accessTokenKey) ?? '';
   }
 
   get isLoggedIn(): boolean {
     const accessToken = this.loginResp
       ? this.loginResp?.AccessToken ?? ''
       : this.storage.getItem(TokenKeysEnum.accessTokenKey) ?? '';
-    debugger
     const decoded = this.jwtHelper.decodeToken(accessToken);
     const isExpire = this.jwtHelper.isTokenExpired(accessToken);
     return (

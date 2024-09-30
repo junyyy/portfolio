@@ -15,13 +15,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ArchitectureComponent } from './architecture/architecture.component';
-
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    ArchitectureComponent,
-  ],
+  declarations: [HomeComponent, ArchitectureComponent, ChatComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -35,7 +32,7 @@ import { ArchitectureComponent } from './architecture/architecture.component';
     TerminalModule,
     ConfirmDialogModule,
     InputTextModule,
-    ProgressSpinnerModule
-  ]
+    ProgressSpinnerModule,
+  ],
 })
-export class HomeModule { }
+export class HomeModule {}

@@ -3,7 +3,10 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { TerminalService } from 'primeng/terminal';
 import { finalize, Subscription } from 'rxjs';
 import { NodeService } from '../../../services/demo/node.service';
-import { AuthService, TokenKeysEnum } from '../../../services/auth/auth.service';
+import {
+  AuthService,
+  TokenKeysEnum,
+} from '../../../services/auth/auth.service';
 import { S3Service } from '../../../services/s3/s3.service';
 import { StorageService } from '../../../services/storage/storage.service';
 import { Router } from '@angular/router';
@@ -12,7 +15,13 @@ import { Router } from '@angular/router';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  providers: [MessageService, TerminalService, NodeService, MessageService, ConfirmationService],
+  providers: [
+    MessageService,
+    TerminalService,
+    NodeService,
+    MessageService,
+    ConfirmationService,
+  ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   displayTerminal: boolean = false;
@@ -36,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private s3Service: S3Service,
     private storage: StorageService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -111,8 +120,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         icon: 'assets/demo/dock-icons/gamepad.svg',
         command: () => {
           this.messageService.add({
-            severity:'info',
-            detail: 'In progress'
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Still working on...',
           });
         },
       },
@@ -127,6 +137,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         },
         icon: 'assets/demo/dock-icons/github.svg',
         command: () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Still working on...',
+          });
         },
       },
     ];
@@ -135,6 +150,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       {
         label: 'My Portfolio',
         styleClass: 'menubar-root',
+        command: () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Still working on...',
+          });
+        },
       },
       {
         label: 'Tech Doc',
@@ -144,7 +166,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             icon: 'pi pi-fw pi-pencil',
             command: () => {
               this.displayArchi = true;
-            }
+            },
           },
           {
             label: 'Source code',
@@ -155,16 +177,19 @@ export class HomeComponent implements OnInit, OnDestroy {
                 icon: 'pi pi-fw pi-pencil',
                 command: () => {
                   window.open('https://github.com/junyyy/portfolio', '_blank');
-                }
+                },
               },
               {
                 label: 'Backend',
                 icon: 'pi pi-fw pi-pencil',
                 command: () => {
-                  window.open('https://github.com/junyyy/portfolio-lambda', '_blank');
-                }
+                  window.open(
+                    'https://github.com/junyyy/portfolio-lambda',
+                    '_blank'
+                  );
+                },
               },
-            ]
+            ],
           },
         ],
       },
@@ -177,21 +202,19 @@ export class HomeComponent implements OnInit, OnDestroy {
             command: () => {
               this.s3Service.getS3ObjUrl('certificate.pdf').subscribe((url) => {
                 window.open(url, '_blank');
-              })
-
-            }
-
+              });
+            },
           },
           {
             label: 'Professional Year',
             icon: 'pi pi-fw pi-pencil',
             command: () => {
-              this.s3Service.getS3ObjUrl('professiona_year.pdf').subscribe((url) => {
-                window.open(url, '_blank');
-              })
-
-            }
-
+              this.s3Service
+                .getS3ObjUrl('professiona_year.pdf')
+                .subscribe((url) => {
+                  window.open(url, '_blank');
+                });
+            },
           },
         ],
       },
@@ -206,12 +229,16 @@ export class HomeComponent implements OnInit, OnDestroy {
             rejectIcon: 'none',
             rejectButtonStyleClass: 'p-button-text',
             accept: () => {
-              this.authService.logout().pipe(finalize(() => {
-                this.authService.updateLoginResp = null;
-                this.storage.removeItem(TokenKeysEnum.accessTokenKey);
-                this.router.navigate(['/auth/login']);
-              })).subscribe((_) => {
-              })
+              this.authService
+                .logout()
+                .pipe(
+                  finalize(() => {
+                    this.authService.updateLoginResp = null;
+                    this.storage.removeItem(TokenKeysEnum.accessTokenKey);
+                    this.router.navigate(['/auth/login']);
+                  })
+                )
+                .subscribe((_) => {});
             },
           });
         },
