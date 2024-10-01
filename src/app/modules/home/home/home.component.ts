@@ -24,7 +24,6 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit, OnDestroy {
   displayTerminal: boolean = false;
   displayArchi: boolean = false;
-  displayPortfolio: boolean = false;
   dockItems: MenuItem[] | undefined;
   menubarItems: any[] | undefined;
   responsiveOptions: any[] | undefined;
@@ -34,7 +33,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   curDatetime: Date = new Date();
   timeOut: any = null;
   s3FileUrlMap: Map<string, string> = new Map();
-  pdfUrl: string = '';
+
+  displayCv: boolean = false;
+  cvPdfUrl: string = '';
+
+  displayHegs: boolean = false;
+  hegsPdfUrl: string = '';
+
+  displayPfYr: boolean = false;
+  pfYrPdfUrl: string = '';
 
   constructor(
     private authService: AuthService,
@@ -150,10 +157,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         label: 'My CV',
         styleClass: 'menubar-root',
         command: () => {
-          const sub = this.getS3FileSub('cv.pdf');
-          sub.subscribe((url) => {
-            this.pdfUrl = url ?? '';
-            this.displayPortfolio = true;
+          this.getS3FileSub('cv.pdf').subscribe((url) => {
+            this.cvPdfUrl = url ?? '';
+            this.displayCv = true;
           });
         },
       },
@@ -199,14 +205,20 @@ export class HomeComponent implements OnInit, OnDestroy {
             label: 'HEGS',
             icon: 'pi pi-fw pi-pencil',
             command: () => {
-              this.openFileCommand('certificate.pdf');
+              this.getS3FileSub('certificate.pdf').subscribe((url) => {
+                this.hegsPdfUrl = url ?? '';
+                this.displayHegs = true;
+              });
             },
           },
           {
             label: 'Professional Year',
             icon: 'pi pi-fw pi-pencil',
             command: () => {
-              this.openFileCommand('professiona_year.pdf');
+              this.getS3FileSub('professiona_year.pdf').subscribe((url) => {
+                this.pfYrPdfUrl = url ?? '';
+                this.displayPfYr = true;
+              });
             },
           },
         ],
@@ -272,14 +284,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.s3FileUrlMap.has(fileName)
       ? of(this.s3FileUrlMap.get(fileName))
       : this.s3Service.getS3ObjUrl(fileName);
-  }
-
-  openFileCommand(fileName: string) {
-    const sub = this.getS3FileSub(fileName);
-    sub.subscribe((url) => {
-      if (!this.s3FileUrlMap.has(fileName))
-        this.s3FileUrlMap.set(fileName, url ?? '');
-      window.open(url, '_blank');
-    });
   }
 }

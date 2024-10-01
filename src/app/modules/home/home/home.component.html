@@ -20,9 +20,9 @@
 
   <p-toast position="top-center" key="tc" />
 
-  <ng-container *ngIf="displayPortfolio">
+  <ng-container *ngIf="displayCv">
     <p-dialog
-    [(visible)]="displayPortfolio"
+    [(visible)]="displayCv"
     [breakpoints]="{ '960px': '50vw' }"
     [style]="{ width: '65vw', height: '65vh' }"
     [maximizable]="true"
@@ -30,7 +30,43 @@
     [resizable]="true"
   >
     <iframe
-      [src]="pdfUrl | safeUrl"
+      [src]="cvPdfUrl | safeUrl"
+      width="100%"
+      height="600px"
+      style="height: 100%"
+    ></iframe>
+  </p-dialog>
+  </ng-container>
+
+  <ng-container *ngIf="displayHegs">
+    <p-dialog
+    [(visible)]="displayHegs"
+    [breakpoints]="{ '960px': '50vw' }"
+    [style]="{ width: '65vw', height: '65vh' }"
+    [maximizable]="true"
+    [draggable]="true"
+    [resizable]="true"
+  >
+    <iframe
+      [src]="hegsPdfUrl | safeUrl"
+      width="100%"
+      height="600px"
+      style="height: 100%"
+    ></iframe>
+  </p-dialog>
+  </ng-container>
+
+  <ng-container *ngIf="displayPfYr">
+    <p-dialog
+    [(visible)]="displayPfYr"
+    [breakpoints]="{ '960px': '50vw' }"
+    [style]="{ width: '65vw', height: '65vh' }"
+    [maximizable]="true"
+    [draggable]="true"
+    [resizable]="true"
+  >
+    <iframe
+      [src]="pfYrPdfUrl | safeUrl"
       width="100%"
       height="600px"
       style="height: 100%"
