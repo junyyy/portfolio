@@ -55,7 +55,6 @@ export class ArchitectureComponent implements AfterViewInit {
 
     Rel(apigateway, lambda, "trigger lambda")
     BiRel(lambda, cognito, "auth service")
-    BiRel(lambda, amplify, "")
     BiRel(lambda, s3, "object service")
     BiRel(amplify, spa, "code base, management, deployment")
     Rel(lambda, backend, "runtime and management")
