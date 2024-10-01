@@ -158,6 +158,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         styleClass: 'menubar-root',
         command: () => {
           this.getS3FileSub('cv.pdf').subscribe((url) => {
+            this.s3FileUrlMap.set('cv.pdf', url ?? '');
             this.cvPdfUrl = url ?? '';
             this.displayCv = true;
           });
@@ -206,6 +207,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             icon: 'pi pi-fw pi-pencil',
             command: () => {
               this.getS3FileSub('certificate.pdf').subscribe((url) => {
+                this.s3FileUrlMap.set('certificate.pdf', url ?? '');
                 this.hegsPdfUrl = url ?? '';
                 this.displayHegs = true;
               });
@@ -216,6 +218,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             icon: 'pi pi-fw pi-pencil',
             command: () => {
               this.getS3FileSub('professiona_year.pdf').subscribe((url) => {
+                this.s3FileUrlMap.set('professiona_year.pdf', url ?? '');
                 this.pfYrPdfUrl = url ?? '';
                 this.displayPfYr = true;
               });
