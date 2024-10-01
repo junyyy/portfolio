@@ -39,4 +39,8 @@
             width: 300px;;
         }
     }
+    button.p-button {
+        display: flex;
+        flex-direction: row-reverse;
+    }
 }
