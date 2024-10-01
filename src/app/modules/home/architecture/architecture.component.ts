@@ -26,7 +26,7 @@ export class ArchitectureComponent implements AfterViewInit {
     return `          C4Context
     title App Structure
     Person(user, "User")
-    Rel(user, amplify, "handle http request")
+    BiRel(user, amplify, "handle http request")
 
     System_Boundary(awsBoundary, "AWS") {
         Boundary(apigatewayContainer, "http service") {
