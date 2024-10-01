@@ -23,34 +23,39 @@ export class ArchitectureComponent implements AfterViewInit {
   }
 
   getDiagramDefiniation(): string {
-    return `       C4Context
+    return `          C4Context
     title App Structure
     Person(user, "User")
-    Rel(user, amplify, "use")
+    Rel(user, amplify, "handle http request")
+
+    System_Boundary(awsBoundary, "AWS") {
+        Boundary(apigatewayContainer, "http service") {
+        System(apigateway, "API Gateway", "manage http service")
+
+        }
+        Boundary(runtime, "hosting env") {
+            System(amplify, "Amplify", "hosting web app")
+            System(lambda, "Lambda", "lambda function runtime")
+        }
+        Boundary(idp, "identity service") {
+            System(cognito, "Cognito", "identity service provider")
+        }
+        Boundary(storage, "storage service") {
+            System(s3, "S3", "storage service provider")
+        }
+      }
+
     System_Boundary(github, "Github", "code repository") {
     Container(spa, "SPA", "angular", "The main interface that the user interacts with")
     Container(backend, "Backend", "golang", "handle http request")
     }
 
-    System_Boundary(awsBoundary, "AWS") {
-        Boundary(runtime, "Hosting env") {
-            System(amplify, "Amplify", "hosting web app")
-            System(lambda, "Lambda", "lambda function runtime")
 
-        }
-        Boundary(apigatewayContainer, "Http service") {
-            System(apigateway, "API Gateway", "manage http service")
+    BiRel(amplify, apigateway, "handle http request")
 
-        }
-        Boundary(other, "Other service") {
-            System(cognito, "Cognito", "identity service provider")
-            System(s3, "S3", "storage service provider")
-        }
-      }
-
-    Rel(amplify, apigateway, "send http request")
     Rel(apigateway, lambda, "trigger lambda")
     BiRel(lambda, cognito, "auth service")
+    BiRel(lambda, amplify, "")
     BiRel(lambda, s3, "object service")
     BiRel(amplify, spa, "code base, management, deployment")
     Rel(lambda, backend, "runtime and management")
