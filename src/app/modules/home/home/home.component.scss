@@ -97,6 +97,10 @@
       }
     }
   }
+
+  .p-element div.p-dialog-content {
+    overflow-y: hidden;
+  }
 }
 
 .dark-tooltip {
