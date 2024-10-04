@@ -1,0 +1,36 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <div class="contact-info">
+      <img
+        src="assets/demo/user-profile.svg"
+        alt="User"
+        class="contact-avatar"
+      />
+      <div class="contact-name">Groq Chatbot</div>
+    </div>
+  </div>
+
+  <div class="chat-window">
+    <div
+      *ngFor="let message of messages"
+      [ngClass]="{
+        'user-msg': message.sender === 'user',
+        'reply-msg': message.sender === 'other'
+      }"
+    >
+      <div class="message-bubble">
+        <span class="message-text">{{ message.text }}</span>
+        <span class="message-time">{{ message.time }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      [(ngModel)]="userMessage"
+      (keyup.enter)="sendMessage()"
+      placeholder="Type a message..."
+    />
+    <button (click)="sendMessage()" [disabled]="disableSendBtn">Send</button>
+  </div>
+</div>

@@ -1,6 +1,5 @@
 import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { TerminalService } from 'primeng/terminal';
 import { finalize, Observable, of, Subscription } from 'rxjs';
 import {
   AuthService,
@@ -16,13 +15,12 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.scss',
   providers: [
     MessageService,
-    TerminalService,
     MessageService,
     ConfirmationService,
   ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  displayTerminal: boolean = false;
+  displayChatbot: boolean = false;
   displayArchi: boolean = false;
   dockItems: MenuItem[] | undefined;
   menubarItems: any[] | undefined;
@@ -46,12 +44,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
-    private terminalService: TerminalService,
     private confirmationService: ConfirmationService,
     private renderer: Renderer2,
     private s3Service: S3Service,
     private storage: StorageService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -70,78 +67,33 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.renderer.removeStyle(document.documentElement, 'overflow');
   }
 
-  commandHandler(text: any) {
-    let response;
-    let argsIndex = text.indexOf(' ');
-    let command = argsIndex !== -1 ? text.substring(0, argsIndex) : text;
-
-    switch (command) {
-      case 'date':
-        response = 'Today is ' + new Date().toDateString();
-        break;
-
-      case 'greet':
-        response = 'Hola ' + text.substring(argsIndex + 1) + '!';
-        break;
-
-      case 'random':
-        response = Math.floor(Math.random() * 100);
-        break;
-
-      default:
-        response = 'Unknown command: ' + command;
-        break;
-    }
-
-    if (response) {
-      this.terminalService.sendResponse(response as string);
-    }
-  }
 
   fetchDate() {
     this.dockItems = [
       {
-        label: 'Terminal',
+        label: 'AI Chatbot',
         tooltipOptions: {
-          tooltipLabel: 'Terminal',
+          tooltipLabel: 'AI Chatbot',
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'assets/demo/dock-icons/terminal.svg',
+        icon: 'assets/demo/dock-icons/chatbot.svg',
         command: () => {
-          this.displayTerminal = true;
+          this.displayChatbot = true;
         },
       },
       {
-        label: 'Game',
+        label: 'Chat',
         tooltipOptions: {
-          tooltipLabel: 'Game',
+          tooltipLabel: 'Chat',
           tooltipPosition: 'top',
           positionTop: -15,
           positionLeft: 15,
           showDelay: 1000,
         },
-        icon: 'assets/demo/dock-icons/gamepad.svg',
-        command: () => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Info',
-            detail: 'Still working on...',
-          });
-        },
-      },
-      {
-        label: 'GitHub',
-        tooltipOptions: {
-          tooltipLabel: 'GitHub',
-          tooltipPosition: 'top',
-          positionTop: -15,
-          positionLeft: 15,
-          showDelay: 1000,
-        },
-        icon: 'assets/demo/dock-icons/github.svg',
+        icon: 'assets/demo/dock-icons/walkie-talkie.svg',
         command: () => {
           this.messageService.add({
             severity: 'info',
@@ -267,10 +219,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         numVisible: 1,
       },
     ];
-
-    this.subscription = this.terminalService.commandHandler.subscribe(
-      (command) => this.commandHandler(command)
-    );
   }
 
   startDate() {

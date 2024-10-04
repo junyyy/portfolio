@@ -17,12 +17,14 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ArchitectureComponent } from './architecture/architecture.component';
 import { ChatComponent } from './chat/chat.component';
 import { SafeUrlPipe } from '../../services/pipes/safe-url.pipe';
+import { DialogComponent } from './dialog/dialog.component';
 @NgModule({
   declarations: [
     HomeComponent,
     ArchitectureComponent,
     ChatComponent,
     SafeUrlPipe,
+    DialogComponent,
   ],
   imports: [
     CommonModule,
