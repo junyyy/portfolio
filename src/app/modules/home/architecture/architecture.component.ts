@@ -23,10 +23,11 @@ export class ArchitectureComponent implements AfterViewInit {
   }
 
   getDiagramDefiniation(): string {
-    return `          C4Context
+    return ` 
+    C4Context
     title App Structure
     Person(user, "User")
-    BiRel(user, amplify, "handle http request")
+    BiRel(user, amplify, "")
 
     System_Boundary(awsBoundary, "AWS") {
         Boundary(apigatewayContainer, "http service") {
@@ -35,7 +36,9 @@ export class ArchitectureComponent implements AfterViewInit {
         }
         Boundary(runtime, "hosting env") {
             System(amplify, "Amplify", "hosting web app")
-            System(lambda, "Lambda", "lambda function runtime")
+            System(lambda, "Lambda", "main service")
+            System(lambda-node, "Lambda", "connect to groq")
+
         }
         Boundary(idp, "identity service") {
             System(cognito, "Cognito", "identity service provider")
@@ -45,19 +48,29 @@ export class ArchitectureComponent implements AfterViewInit {
         }
       }
 
+
     System_Boundary(github, "Github", "code repository") {
-    Container(spa, "SPA", "angular", "The main interface that the user interacts with")
-    Container(backend, "Backend", "golang", "handle http request")
+        Container(spa, "SPA", "angular", "ui")
+        Container(backend-golang, "Backend", "golang", "")
+        Container(backend-node, "Backend", "Node Js", "groq ai")
+    }
+
+    System_Boundary(groq, "GroqAI", "code repository") {
+        Container(ai-service, "API", "", "")
+
     }
 
 
-    BiRel(amplify, apigateway, "handle http request")
+    BiRel(amplify, apigateway, "")
 
-    Rel(apigateway, lambda, "trigger lambda")
+    BiRel(apigateway, lambda, "")
     BiRel(lambda, cognito, "auth service")
     BiRel(lambda, s3, "object service")
     BiRel(amplify, spa, "code base, management, deployment")
-    Rel(lambda, backend, "runtime and management")
+    Rel(lambda, backend-golang, "runtime and management")
+    BiRel(lambda-node, ai-service, "")
+    Rel(lambda-node, backend-node, "")
+    BiRel(apigateway, lambda-node, "")
     `;
   }
 }
