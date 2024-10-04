@@ -11,8 +11,8 @@ import {
 })
 export class DialogComponent implements OnInit {
   disableSendBtn: boolean = false;
-
   constructor(private chatService: ChatbotGroqService) {}
+
   ngOnInit(): void {
     this.pushMsg(
       'Note: a free api key is provided by Groq, it might not be avaialble in future ',

@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         },
       },
       {
-        label: 'Tech Doc',
+        label: 'Documentation',
         items: [
           {
             label: 'App structure',

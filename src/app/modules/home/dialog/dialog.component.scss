@@ -57,13 +57,13 @@
 .user-msg .message-bubble {
   background-color: #dcf8c6;
   margin-left: auto;
-  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .reply-msg .message-bubble {
   background-color: #fff;
   margin-right: auto;
-  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .message-text {
@@ -83,30 +83,31 @@
   padding: 10px;
   background-color: #f0f0f0;
   display: flex;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+  input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 30px;
+    margin-right: 10px;
+    background-color: #fff;
+    outline: none;
+  }
+
+  button {
+    padding: 10px 15px;
+    background-color: #075e54;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      background-color: #128c7e;
+    }
+  }
 }
 
-.chat-input input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 30px;
-  margin-right: 10px;
-  background-color: #fff;
-  outline: none;
-}
-
-.chat-input button {
-  padding: 10px 15px;
-  background-color: #075e54;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  outline: none;
-}
-
-.chat-input button:hover {
-  background-color: #128c7e;
-}
