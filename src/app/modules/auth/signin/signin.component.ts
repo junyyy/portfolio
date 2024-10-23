@@ -31,8 +31,8 @@ export class SigninComponent {
 
   createForm() {
     this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      username: ['jun-portfolio-user', Validators.required],
+      password: ['jun-portfolio-user-pwd', Validators.required],
       file: [null],
     });
   }
